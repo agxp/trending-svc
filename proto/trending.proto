@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package trending;
+
+import "github.com/agxp/cloudflix/video-hosting-svc/proto/host.proto";
+
+service Trending {
+    rpc GetTrending(Request) returns (GetTrendingResponse) {}
+    rpc Prune(PruneRequest) returns (PruneResponse) {}
+}
+
+message Request {}
+
+message GetTrendingResponse {
+	repeated video_host.GetVideoInfoResponse data = 1;
+}
+
+message PruneRequest {}
+
+message PruneResponse {
+	uint64 num_pruned = 1;
+}
