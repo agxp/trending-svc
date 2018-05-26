@@ -23,10 +23,10 @@ type TrendingRepository struct {
 }
 
 func (repo *TrendingRepository) GetTrending(parent opentracing.SpanContext) ([]*video_host.GetVideoInfoResponse, error) {
-	sp, _ := opentracing.StartSpanFromContext(context.Background(), "GetTrending_Repo", opentracing.ChildOf(parent))
+	sp, _ := opentracing.StartSpanFromContext(context.TODO(), "GetTrending_Repo", opentracing.ChildOf(parent))
 	defer sp.Finish()
 
-	dbSP, _ := opentracing.StartSpanFromContext(context.Background(), "PG_GetTrending", opentracing.ChildOf(sp.Context()))
+	dbSP, _ := opentracing.StartSpanFromContext(context.TODO(), "PG_GetTrending", opentracing.ChildOf(sp.Context()))
 	defer dbSP.Finish()
 
 	getTrendingQuery := `select id from videos where uploaded=true order by date_uploaded limit 20`
@@ -58,7 +58,7 @@ func (repo *TrendingRepository) GetTrending(parent opentracing.SpanContext) ([]*
 	var data []*video_host.GetVideoInfoResponse
 	
 	for _, v := range ids {
-		res, err := repo.vh.GetVideoInfo(context.Background(), &video_host.GetVideoInfoRequest{
+		res, err := repo.vh.GetVideoInfo(context.TODO(), &video_host.GetVideoInfoRequest{
 			Id: v,
 		})
 		
@@ -76,10 +76,10 @@ func (repo *TrendingRepository) GetTrending(parent opentracing.SpanContext) ([]*
 }
 
 func (repo *TrendingRepository) Prune(parent opentracing.SpanContext) (uint64, error) {
-	sp, _ := opentracing.StartSpanFromContext(context.Background(), "Prune_Repo", opentracing.ChildOf(parent))
+	sp, _ := opentracing.StartSpanFromContext(context.TODO(), "Prune_Repo", opentracing.ChildOf(parent))
 	defer sp.Finish()
 
-	dbSP, _ := opentracing.StartSpanFromContext(context.Background(), "PG_Prune", opentracing.ChildOf(sp.Context()))
+	dbSP, _ := opentracing.StartSpanFromContext(context.TODO(), "PG_Prune", opentracing.ChildOf(sp.Context()))
 	defer dbSP.Finish()
 
 	now := time.Now()
