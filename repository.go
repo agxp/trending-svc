@@ -7,11 +7,8 @@ import (
 	"github.com/minio/minio-go"
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
-	"os"
 	"time"
 )
-
-var THUMB_HOST = os.Getenv("THUMB_HOST")
 
 type Repository interface {
 	GetTrending(p opentracing.SpanContext) ([]*video_host.GetVideoInfoResponse, error)
@@ -86,6 +83,7 @@ func (repo *TrendingRepository) Prune(parent opentracing.SpanContext) (uint64, e
 	defer dbSP.Finish()
 
 	now := time.Now()
+	sp.LogKV("now", now)
 
 	pruneQuery := `delete from videos where uploaded=false and timeout_date < $1`
 
